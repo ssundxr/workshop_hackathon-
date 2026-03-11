@@ -17,8 +17,8 @@ warnings.filterwarnings("ignore")
 
 # ─── Page config ────────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="❤️ Heart Disease Predictor",
-    page_icon="❤️",
+    page_title="Heart Disease Predictor",
+    page_icon="💗",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -63,7 +63,7 @@ with st.sidebar:
     st.markdown("---")
     page = st.radio(
         "Navigate",
-        ["🏠 Overview", "📊 EDA", "🤖 Model Training", "🔮 Predict"],
+        ["Overview", "EDA", "Model Training", "Predict"],
         label_visibility="collapsed"
     )
     st.markdown("---")
@@ -149,8 +149,8 @@ FEATURE_LABELS = {
 # ════════════════════════════════════════════════════════════════════════════════
 #  PAGE: OVERVIEW
 # ════════════════════════════════════════════════════════════════════════════════
-if page == "🏠 Overview":
-    st.title("❤️ Heart Disease Prediction System")
+if page == "Overview":
+    st.title("Heart Disease Prediction System")
     st.markdown("**Pragyan AI Hackathon Project** — Classification using ML")
     st.markdown("---")
 
@@ -168,7 +168,7 @@ if page == "🏠 Overview":
     col_l, col_r = st.columns(2)
 
     with col_l:
-        st.markdown("### 📌 Problem Statement")
+        st.markdown("### Problem Statement")
         st.info("""
 Build a model to **predict whether a patient has heart disease**
 based on 13 clinical measurements such as age, cholesterol,
@@ -176,23 +176,23 @@ blood pressure, and chest pain type.
 
 **Target:** `target` — 0 = No Disease, 1 = Disease
         """)
-        st.markdown("### 🧠 Models Used")
-        st.success("✅ Logistic Regression\n\n✅ Random Forest Classifier")
+        st.markdown("### Models Used")
+        st.success("Logistic Regression\n\nRandom Forest Classifier")
 
     with col_r:
-        st.markdown("### 📋 Feature Description")
+        st.markdown("### Feature Description")
         feat_df = pd.DataFrame(FEATURE_LABELS.items(), columns=["Feature", "Description"])
         st.dataframe(feat_df, use_container_width=True, hide_index=True)
 
     st.markdown("---")
-    st.markdown("### 📄 Raw Dataset Preview")
+    st.markdown("### Raw Dataset Preview")
     st.dataframe(df.head(10), use_container_width=True)
 
 # ════════════════════════════════════════════════════════════════════════════════
 #  PAGE: EDA
 # ════════════════════════════════════════════════════════════════════════════════
-elif page == "📊 EDA":
-    st.title("📊 Exploratory Data Analysis")
+elif page == "EDA":
+    st.title("Exploratory Data Analysis")
     st.markdown("---")
 
     # Target distribution
@@ -226,7 +226,7 @@ elif page == "📊 EDA":
         st.pyplot(fig)
 
     # Correlation heatmap
-    st.markdown("#### 🔥 Correlation Heatmap")
+    st.markdown("#### Correlation Heatmap")
     fig, ax = plt.subplots(figsize=(12, 6), facecolor="#0f1117")
     ax.set_facecolor("#1e1e2e")
     corr = df.corr()
@@ -270,14 +270,14 @@ elif page == "📊 EDA":
         fig.tight_layout()
         st.pyplot(fig)
 
-    st.markdown("#### 📊 Statistical Summary")
+    st.markdown("#### Statistical Summary")
     st.dataframe(df.describe().T.style.background_gradient(cmap="RdYlGn"), use_container_width=True)
 
 # ════════════════════════════════════════════════════════════════════════════════
 #  PAGE: MODEL TRAINING
 # ════════════════════════════════════════════════════════════════════════════════
-elif page == "🤖 Model Training":
-    st.title("🤖 Model Training & Evaluation")
+elif page == "Model Training":
+    st.title("Model Training & Evaluation")
     st.markdown("---")
 
     scaler   = models["scaler"]
@@ -298,7 +298,7 @@ elif page == "🤖 Model Training":
     lr_pred, lr_prob, lr_rep, lr_auc = get_metrics(lr, X_test_s, y_test)
     rf_pred, rf_prob, rf_rep, rf_auc = get_metrics(rf, X_test_s, y_test)
 
-    st.markdown("### 📈 Model Performance Comparison")
+    st.markdown("### Model Performance Comparison")
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("LR Accuracy",  f"{lr_rep['accuracy']:.2%}")
@@ -369,7 +369,7 @@ elif page == "🤖 Model Training":
         st.pyplot(fig)
 
     st.markdown("---")
-    st.markdown("### 📋 Classification Report — Random Forest")
+    st.markdown("### Classification Report — Random Forest")
     report_df = pd.DataFrame(rf_rep).T.drop("accuracy").round(3)
     st.dataframe(report_df.style.background_gradient(cmap="RdYlGn", subset=["precision","recall","f1-score"]),
                  use_container_width=True)
@@ -377,8 +377,8 @@ elif page == "🤖 Model Training":
 # ════════════════════════════════════════════════════════════════════════════════
 #  PAGE: PREDICT
 # ════════════════════════════════════════════════════════════════════════════════
-elif page == "🔮 Predict":
-    st.title("🔮 Predict Heart Disease Risk")
+elif page == "Predict":
+    st.title("Predict Heart Disease Risk")
     st.markdown("Enter patient details below to get an instant prediction.")
     st.markdown("---")
 
@@ -410,7 +410,7 @@ elif page == "🔮 Predict":
     st.markdown("---")
     model_choice = st.radio("Select Model", ["Random Forest", "Logistic Regression"], horizontal=True)
 
-    if st.button("🔍 Predict Now"):
+    if st.button("Predict Now"):
         input_data = np.array([[age, sex, cp, trestbps, chol, fbs,
                                 restecg, thalach, exang, oldpeak, slope, ca, thal]])
         input_scaled = models["scaler"].transform(input_data)
@@ -419,21 +419,21 @@ elif page == "🔮 Predict":
         pred  = model.predict(input_scaled)[0]
         prob  = model.predict_proba(input_scaled)[0]
 
-        st.markdown("### 🧾 Prediction Result")
+        st.markdown("### Prediction Result")
         col_res, col_gauge = st.columns([1, 1])
 
         with col_res:
             if pred == 1:
                 st.markdown(f"""
                 <div class="predict-positive">
-                    ⚠️ HIGH RISK DETECTED<br><br>
+                    HIGH RISK DETECTED<br><br>
                     Heart Disease Probability: <b>{prob[1]:.1%}</b>
                 </div>""", unsafe_allow_html=True)
                 st.error("Please consult a cardiologist immediately.")
             else:
                 st.markdown(f"""
                 <div class="predict-negative">
-                    ✅ LOW RISK<br><br>
+                    LOW RISK<br><br>
                     Heart Disease Probability: <b>{prob[1]:.1%}</b>
                 </div>""", unsafe_allow_html=True)
                 st.success("No signs of heart disease detected. Stay healthy!")
@@ -455,7 +455,7 @@ elif page == "🔮 Predict":
             fig.tight_layout()
             st.pyplot(fig)
 
-        st.markdown("### 📊 Input Summary")
+        st.markdown("### Input Summary")
         input_summary = pd.DataFrame({
             "Feature": list(FEATURE_LABELS.values()),
             "Value": [age, sex, cp, trestbps, chol, fbs, restecg, thalach,
